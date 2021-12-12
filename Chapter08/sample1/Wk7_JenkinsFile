@@ -37,7 +37,7 @@ spec:
 ''') {
  node(POD_LABEL) {
  stage('Build a gradle project') {
- git 'https://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@github.com/rambabu1295/Continuous-Delivery-with-Docker-and-Jenkins-SecondEdition.git'
+ git 'https://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@github.com/rambabu1295/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git'
  container('gradle') {
  stage('Build a gradle project') {
  sh '''
