@@ -1,0 +1,74 @@
+podTemplate(yaml: '''
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: gradle
+    image: gradle:6.3-jdk14
+    command:
+    - sleep
+    args:
+    - 99d
+    volumeMounts:
+    - name: shared-storage
+      mountPath: /mnt
+  - name: kaniko
+    image: gcr.io/kaniko-project/executor:debug
+    command:
+    - sleep
+    args:
+    - 9999999
+    volumeMounts:
+    - name: shared-storage
+      mountPath: /mnt
+    - name: kaniko-secret
+      mountPath: /kaniko/.docker
+  restartPolicy: Never
+  volumes:
+  - name: shared-storage
+    persistentVolumeClaim:
+      claimName: jenkins-pv-claim
+  - name: kaniko-secret
+    secret:
+        secretName: dockercred
+        items:
+        - key: .dockerconfigjson
+          path: config.json
+''') {
+ node(POD_LABEL) {
+		 stage('Get a gradle project') {
+		 git(
+			url: 'https://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@github.com/rambabu1295/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git',
+			branch: "feature"
+		 )
+		 container('gradle') {
+		 stage('Build a gradle project') {
+		 sh '''
+		pwd
+		cd Chapter08/sample1
+		chmod +x gradlew
+		./gradlew build
+		mv ./build/libs/calculator-0.0.1-SNAPSHOT.jar /mnt
+		'''
+		}
+
+stage("Static code analysis") {
+		 sh '''
+		pwd
+		cd Chapter08/sample1
+		./gradlew checkstyleMain
+		
+		'''
+		publishHTML (target: [
+		 reportDir: 'build/reports/checkstyle',
+		reportFiles: 'main.html',
+		reportName: "checkstyle Report"
+		 ])
+	 }
+ 
+
+ 
+}
+ }
+ }
+ }
