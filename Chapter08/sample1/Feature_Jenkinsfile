@@ -78,8 +78,7 @@ stage("Static code analysis") {
  /kaniko/executor --context `pwd` --destination ramumldocker/calculator-feature:0.1
  '''
  }  
- 
- 
+  
 }
  }
  }
