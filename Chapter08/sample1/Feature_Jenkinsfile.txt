@@ -1,0 +1,42 @@
+podTemplate(containers: [
+ containerTemplate(
+ name: 'gradle',
+ image: 'gradle:6.3-jdk14',
+ command: 'sleep',
+ args: '30d'
+ ),
+ ]) {
+ node(POD_LABEL) {
+		 stage('Get a gradle project') {
+		 git(
+			url: 'https://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@github.com/rambabu1295/week6.git',
+			branch: "feature"
+		 )
+		 container('gradle') {
+		 stage('Build a gradle project') {
+		 sh '''
+		pwd
+		chmod +x gradlew
+		./gradlew test
+		'''
+		}
+
+stage("Static code analysis") {
+		 sh '''
+		pwd
+		./gradlew checkstyleMain
+		
+		'''
+		publishHTML (target: [
+		 reportDir: 'build/reports/checkstyle',
+		reportFiles: 'main.html',
+		reportName: "checkstyle Report"
+		 ])
+	 }
+ 
+
+ 
+}
+ }
+ }
+ }
