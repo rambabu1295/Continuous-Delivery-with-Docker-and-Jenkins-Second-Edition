@@ -40,7 +40,7 @@ spec:
   sh '''
   echo 'playground branch testing for Wk7 ex7'
   '''
- 
+ }
  }
 }
  
