@@ -65,6 +65,8 @@ stage("Static code analysis") {
 		reportName: "checkstyle Report"
 		 ])
 	 }
+	 }
+	 }
 	 stage('Build Java Image') {
  container('kaniko') {
  stage('Build a gradle project') {
