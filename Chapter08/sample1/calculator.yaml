@@ -33,3 +33,4 @@ spec:
     app: calculator
   ports:
   - port: 7080
+
