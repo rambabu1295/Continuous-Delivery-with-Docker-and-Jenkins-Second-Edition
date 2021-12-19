@@ -1,0 +1,36 @@
+podTemplate(yaml: '''
+ apiVersion: v1
+ kind: Pod
+ spec:
+   containers:
+   - name: centos
+     image: centos
+     command:
+     - sleep
+     args:
+     - 99d
+   restartPolicy: Never
+''') {
+ node(POD_LABEL) {
+ stage('k8s') {
+ git(
+			url: 'https://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@github.com/rambabu1295/Continuous-Delivery-with-Docker-and-Jenkins-Second-Edition.git',
+			branch: "master"
+  )
+  container('centos') {
+  stage('start calculator') {
+  sh '''
+ pwd
+ echo 'testing'
+ cd Chapter08/sample1
+ curl -ik -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImlDRnV0QVFSX1B0Q0szWXFxWXJtRmVMa3NHUWNsVVNuUEtTQTVBeGVZVzQifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZXZvcHMtdG9vbHMiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlY3JldC5uYW1lIjoiamVua2lucy1hZG1pbi10b2tlbi1sYm05eCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJqZW5raW5zLWFkbWluIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiMTYxNjVhN2QtOTBhNy00YjVjLTlhYTYtZmY2OGRlNmNiYjU3Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50OmRldm9wcy10b29sczpqZW5raW5zLWFkbWluIn0.naKcRKZYrEUqb1au5cEXW2eZvPRHTf_bzeijCXU3VziSqfKGnkgZUm61KnaC6YxvBPenTST47ZeHIZUdiBpVNpZGoMaAMLwrG7qrWhJOHrsU1D7PUqICpG8eQ4bQxmE8JIAJYYgdOTrBfzSbPnRJ1Kx4cNSf451HY1QZli-eGBfwWC_qAghHAcOi5eHiNfBOeJg1wQqd6SNQ57u4_JCnSAawigngNUqHt3euBEPFfaZ987b_xA5y7s-nHwT16PayoSgCbr-5yvThi_-Wf8svJ4_Fr4Ksnfg-1APH9ARzvLRTt_24UDIu4u_QDN7jQl2lDxgyn1BboTrTM1YIqpvUPQ" https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT/apis/apps/v1/namespaces/devops-tools/deployments -XPOST -H "Content-type: application/yaml" --data-binary @hazelcast.yaml
+
+
+ curl -ik -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImlDRnV0QVFSX1B0Q0szWXFxWXJtRmVMa3NHUWNsVVNuUEtTQTVBeGVZVzQifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZXZvcHMtdG9vbHMiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlY3JldC5uYW1lIjoiamVua2lucy1hZG1pbi10b2tlbi1sYm05eCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJqZW5raW5zLWFkbWluIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiMTYxNjVhN2QtOTBhNy00YjVjLTlhYTYtZmY2OGRlNmNiYjU3Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50OmRldm9wcy10b29sczpqZW5raW5zLWFkbWluIn0.naKcRKZYrEUqb1au5cEXW2eZvPRHTf_bzeijCXU3VziSqfKGnkgZUm61KnaC6YxvBPenTST47ZeHIZUdiBpVNpZGoMaAMLwrG7qrWhJOHrsU1D7PUqICpG8eQ4bQxmE8JIAJYYgdOTrBfzSbPnRJ1Kx4cNSf451HY1QZli-eGBfwWC_qAghHAcOi5eHiNfBOeJg1wQqd6SNQ57u4_JCnSAawigngNUqHt3euBEPFfaZ987b_xA5y7s-nHwT16PayoSgCbr-5yvThi_-Wf8svJ4_Fr4Ksnfg-1APH9ARzvLRTt_24UDIu4u_QDN7jQl2lDxgyn1BboTrTM1YIqpvUPQ" https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT/apis/apps/v1/namespaces/devops-tools/deployments -XPOST -H "Content-type: application/yaml" --data-binary @calculator.yaml
+ '''
+ }
+ 
+ }
+ }
+ }
+}
